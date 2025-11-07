@@ -18,7 +18,11 @@
     });
   in {
     templates = nixpkgs.lib.genAttrs [
+      "c"
+      "linux"
       "rust"
+      "typst"
+      "typst-rotis"
     ] (name : {
       path = ./templates/${name};
       description = (import ./templates/${name}/flake.nix).description;
