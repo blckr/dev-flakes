@@ -1,11 +1,11 @@
 {
-  description = "Rust-Flake by blckr";
+  description = "Typst-Flake by blckr";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { nixpkgs, ... }: let
+  outputs = { self, nixpkgs, ... }: let
     supportedSystems = [ "aarch64-linux" "x86_64-linux"
                          "aarch64-darwin" "x86_64-darwin" ];
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -15,13 +15,11 @@
     in {
       default = pkgs.mkShellNoCC {
         buildInputs = with pkgs; [
-          rustc
-          cargo
-          gcc
-          rust-analyzer
-          rustfmt
-          clippy
-          gdb
+          git
+          pandoc
+          typst
+          tinymist
+          typstyle
         ];
       };
     });
