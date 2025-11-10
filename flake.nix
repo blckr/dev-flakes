@@ -32,6 +32,10 @@
     ] (name : {
       path = ./templates/${name};
       description = (import ./templates/${name}/flake.nix).description;
-    });
+    }) {
+      # Aliases
+      cpp = self.templates.c;
+      linux = self.templates.linux-llvm;
+    };
   };
 }
