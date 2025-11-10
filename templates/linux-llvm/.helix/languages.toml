@@ -5,3 +5,14 @@ file-types = ["c", "h"]
 language-servers = ["clangd"]
 indent = { tab-width = 8, unit = "\t" }
 rulers = [80]
+
+[language-server.clangd]
+command = "clangd"
+args = [
+  "--compile-commands-dir=.",
+  "--header-insertion=never",
+  "--background-index",
+  "--clang-tidy",
+  "-std=gnu99",
+  # "-fPIC",
+]
