@@ -16,6 +16,9 @@
     pkgs = forAllSystems (system: import nixpkgs {
       inherit system; overlays = [ self.overlays.default ];
     });
+    
+    loadDescription = templateName: (import ./templates/${templateName}/flake.nix).description;
+    
   in {
     templates = nixpkgs.lib.genAttrs [
       "c"
@@ -31,11 +34,17 @@
       "typst-rotis"
     ] (name : {
       path = ./templates/${name};
-      description = (import ./templates/${name}/flake.nix).description;
+      description = loadDescription name;
     }) // {
       # Aliases
-      cpp = self.templates.c;
-      linux = self.templates.linux-llvm;
+      cpp = {
+        path = ./templates/c;
+        description = loadDescription "c";
+      };
+      linux = {
+        path = ./templates/linux-llvm;
+        description = loadDescription "linux-llvm";
+      };
     };
   };
 }
