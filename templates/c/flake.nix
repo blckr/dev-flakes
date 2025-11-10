@@ -3,26 +3,56 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-      {
-        devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            gcc
-            gdb
-            valgrind
-            cmake
-            pkg-config
-            bear
-          ];
-        };
-      }
-    );
+  outputs =
+    { self, ... }@inputs:
+
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      forEachSupportedSystem =
+        f:
+        inputs.nixpkgs.lib.genAttrs supportedSystems (
+          system:
+          f {
+            pkgs = import inputs.nixpkgs { inherit system; };
+          }
+        );
+    in
+    {
+      devShells = forEachSupportedSystem (
+        { pkgs }:
+        {
+          default =
+            pkgs.mkShell.override
+              {
+                # Override stdenv in order to change compiler:
+                # stdenv = pkgs.clangStdenv;
+              }
+              {
+                packages =
+                  with pkgs;
+                  [
+                    clang-tools
+                    cmake
+                    codespell
+                    conan
+                    cppcheck
+                    doxygen
+                    gtest
+                    lcov
+                    vcpkg
+                    vcpkg-tool
+                  ]
+                  ++ (if system == "aarch64-darwin" then [ ] else [ gdb ]);
+              };
+        }
+      );
+    };
 }
 

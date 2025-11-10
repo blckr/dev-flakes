@@ -19,7 +19,13 @@
   in {
     templates = nixpkgs.lib.genAttrs [
       "c"
+      "go"
+      "java"
+      "jupyter"
+      "kotlin"
       "linux-llvm"
+      "platformio"
+      "python"
       "rust"
       "typst"
       "typst-rotis"
