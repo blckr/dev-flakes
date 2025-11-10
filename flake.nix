@@ -19,7 +19,7 @@
   in {
     templates = nixpkgs.lib.genAttrs [
       "c"
-      "linux"
+      "linux-llvm"
       "rust"
       "typst"
       "typst-rotis"
