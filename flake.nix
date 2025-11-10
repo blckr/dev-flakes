@@ -35,6 +35,16 @@
     ] (name : {
       path = ./templates/${name};
       description = loadDescription name;
-    });
+    }) // {
+      # Aliases
+      cpp = {
+        path = ./templates/c;
+        description = loadDescription "c";
+      };
+      linux = {
+        path = ./templates/linux-llvm;
+        description = loadDescription "linux-llvm";
+      };
+    };
   };
 }
