@@ -1,0 +1,55 @@
+{
+  description = "Jupyter-Flake by blckr";
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+  outputs =
+    { self, ... }@inputs:
+
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      forEachSupportedSystem =
+        f:
+        inputs.nixpkgs.lib.genAttrs supportedSystems (
+          system:
+          f {
+            pkgs = import inputs.nixpkgs { inherit system; };
+          }
+        );
+    in
+    {
+      devShells = forEachSupportedSystem (
+        { pkgs }:
+        {
+          default = pkgs.mkShellNoCC {
+            venvDir = ".venv";
+            packages =
+              with pkgs;
+              [
+                poetry
+                python311
+              ]
+              ++ (with python311Packages; [
+                jupyter
+                notebook
+                jupyterlab
+                ipykernel
+                pip
+                venvShellHook
+              ]);
+            shellHook = ''
+              echo ""
+              echo " -------- Starting Jupyter Notebook --------"
+              echo "jupyter notebook <filename>"
+              echo ""
+            '';
+          };
+        }
+      );
+    };
+}

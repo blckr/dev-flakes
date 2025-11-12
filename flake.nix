@@ -25,6 +25,7 @@
       "go"
       "java"
       "jupyter"
+      "jupyter-notebook"
       "kotlin"
       "linux-llvm"
       "platformio"
