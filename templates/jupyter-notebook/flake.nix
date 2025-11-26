@@ -59,7 +59,7 @@
               
               echo ""
               echo " -------- Starting Jupyter Notebook --------"
-              echo "jupyter notebook --NotebookApp.token='' <filename>"
+              echo "jupyter notebook --NotebookApp.token=\'\' <filename>"
               echo ""
             '';
           };
