@@ -13,6 +13,4 @@ args = [
   "--header-insertion=never",
   "--background-index",
   "--clang-tidy",
-  "-std=gnu99",
-  # "-fPIC",
 ]
