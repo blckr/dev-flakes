@@ -32,7 +32,7 @@
         shellHook = ''
           echo ""
           echo " -------- Building the Linux Kernel --------"
-          echo "make menuconfig (or defconfig)"
+          echo "make nconfig (or defconfig or menuconfig)"
           echo "make LLVM=1 -j16"
           echo "./scripts/clang-tools/gen_compile_commands.py"
           echo ""
