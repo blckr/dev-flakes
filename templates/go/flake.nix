@@ -45,6 +45,8 @@
               gopls
               delve
               golangci-lint-langserver
+
+              gcc
             ];
           };
         }
