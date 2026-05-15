@@ -7,7 +7,7 @@
     { self, ... }@inputs:
 
     let
-      goVersion = 24; # Change this to update the whole stack
+      goVersion = 26; # Change this to update the whole stack
 
       supportedSystems = [
         "x86_64-linux"
@@ -40,11 +40,11 @@
               # go (version is specified by overlay)
               go
 
-              # goimports, godoc, etc.
               gotools
-
-              # https://github.com/golangci/golangci-lint
               golangci-lint
+              gopls
+              delve
+              golangci-lint-langserver
             ];
           };
         }
