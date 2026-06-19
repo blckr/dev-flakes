@@ -1,86 +1,86 @@
 # dev-flakes
 
-Sammlung von Nix-Flake-Templates für reproduzierbare Entwicklungsumgebungen. Jedes Template stellt eine fertige `devShell` mit den relevanten Tools für die jeweilige Sprache bzw. den Anwendungsfall bereit.
+A collection of Nix flake templates for reproducible development environments. Each template provides a ready-to-use `devShell` with the relevant tools for the respective language or use case.
 
-Inspiriert von [the-nix-way/dev-templates](https://github.com/the-nix-way/dev-templates).
+Inspired by [the-nix-way/dev-templates](https://github.com/the-nix-way/dev-templates).
 
-## Voraussetzungen
+## Prerequisites
 
-- [Nix](https://nixos.org/download) mit aktivierten Flakes
-- Optional: [direnv](https://direnv.net/) für automatisches Laden der Shell
+- [Nix](https://nixos.org/download) with flakes enabled
+- Optional: [direnv](https://direnv.net/) for automatic shell loading
 
-## Verwendung
+## Usage
 
-### Einmaliger Start (ohne direnv)
+### One-time start (without direnv)
 
 ```bash
 nix flake init -t github:blckr/dev-flakes#<template>
 nix develop
 ```
 
-### Mit direnv (empfohlen)
+### With direnv (recommended)
 
-Die Templates enthalten bereits eine `.envrc` mit `use flake`. Nach dem Init reicht:
+The templates already include an `.envrc` with `use flake`. After init, just run:
 
 ```bash
 nix flake init -t github:blckr/dev-flakes#<template>
 direnv allow
 ```
 
-Die Entwicklungsumgebung wird dann automatisch beim Betreten des Verzeichnisses aktiviert.
+The development environment will then be activated automatically when entering the directory.
 
 ## Templates
 
-| Name | Alias | Inhalt |
-|------|-------|--------|
+| Name | Alias | Contents |
+|------|-------|----------|
 | `c` | `cpp` | clang-tools, cmake, conan, cppcheck, doxygen, gtest, lcov, vcpkg, gdb |
 | `go` | – | Go 1.26, gopls, golangci-lint, delve, gotools, gcc |
 | `rust` | – | rustc, cargo, rust-analyzer, rustfmt, clippy, gdb |
-| `python` | – | Python 3.13, venv-Hook, pip |
+| `python` | – | Python 3.13, venv hook, pip |
 | `java` | – | JDK 23, Maven, Gradle, Lombok |
 | `kotlin` | – | Kotlin + JDK 23, Gradle |
-| `jupyter` | – | Python 3.11, ipykernel, Poetry (für Skripte/Notebooks) |
+| `jupyter` | – | Python 3.11, ipykernel, Poetry (for scripts/notebooks) |
 | `jupyter-notebook` | – | JupyterLab, ipywidgets, ipympl, jupyterlab-git, Node.js |
 | `typst` | – | typst, tinymist, typstyle, pandoc |
-| `typst-rotis` | – | wie `typst`, zusätzlich Rotis-Schrift (LUH-Netz) |
-| `linux-full` | `linux` | LLVM/Clang 18, QEMU, guestfs-tools, gdb – Linux-Kernel-Entwicklung |
-| `linux-llvm` | – | LLVM/Clang 18, QEMU, gdb, Linux-Kernel-Quellen als `inputsFrom` |
-| `linux-hx` | – | Helix-Konfiguration (languages.toml) für Kernel-Entwicklung |
+| `typst-rotis` | – | like `typst`, additionally includes Rotis font (LUH network) |
+| `linux-full` | `linux` | LLVM/Clang 18, QEMU, guestfs-tools, gdb – Linux kernel development |
+| `linux-llvm` | – | LLVM/Clang 18, QEMU, gdb, Linux kernel sources as `inputsFrom` |
+| `linux-hx` | – | Helix configuration (languages.toml) for kernel development |
 | `platformio` | – | PlatformIO, clang-tools, cmake, conan, cppcheck, gdb |
 
-## Linux-Kernel-Entwicklung
+## Linux Kernel Development
 
-Das `linux-full`-Template enthält ein `meta/`-Verzeichnis mit Justfile, NixOS-VM-Konfiguration und Kernel-Config-Vorlagen für x86 und arm64.
+The `linux-full` template includes a `meta/` directory with a Justfile, NixOS VM configuration, and kernel config templates for x86 and arm64.
 
 ```bash
 nix flake init -t github:blckr/dev-flakes#linux
-# Linux-Repository nach /linux klonen
-make nconfig          # Kernel konfigurieren
+# Clone the Linux repository to /linux
+make nconfig          # Configure the kernel
 just gen-compile-commands
 just make
-just qemu             # VM starten (Login: root oder eval)
+just qemu             # Start the VM (login: root or eval)
 ```
 
-Für Helix-Editor-Support im Kernel-Verzeichnis:
+For Helix editor support in the kernel directory:
 
 ```bash
 nix flake init -t github:blckr/dev-flakes#linux-hx
 ```
 
-## Python-Version anpassen
+## Changing the Python Version
 
-Im `python`-Template kann die Python-Version oben in der `flake.nix` geändert werden:
+In the `python` template, the Python version can be changed at the top of `flake.nix`:
 
 ```nix
-version = "3.13";  # auf gewünschte Version setzen
+version = "3.13";  # set to desired version
 ```
 
-Nach der Änderung `.venv` löschen und Shell neu laden.
+After the change, delete `.venv` and reload the shell.
 
-## Go-Version anpassen
+## Changing the Go Version
 
-Im `go`-Template die Versionsnummer am Anfang der `flake.nix` ändern:
+In the `go` template, change the version number at the beginning of `flake.nix`:
 
 ```nix
-goVersion = 26;  # entspricht go_1_26
+goVersion = 26;  # corresponds to go_1_26
 ```
